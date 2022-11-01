@@ -1,48 +1,15 @@
+#![allow(unused_imports)]
+
+use bevy::diagnostic::{Diagnostics, FrameTimeDiagnosticsPlugin};
 use bevy::prelude::*;
+use bevy_asset_loader::prelude::*;
 
-#[derive(Component)]
-struct Person;
+#[derive(Clone, Eq, PartialEq, Debug, Hash)]
+enum GameState {
+    AssetLoading,
+    Playing,
+    Menu,
 
-#[derive(Component)]
-struct Name(String);
-
-fn add_people(mut commands: Commands) {
-    commands
-        .spawn()
-        .insert(Person)
-        .insert(Name("Elaina Proctor".to_string()));
-    commands
-        .spawn()
-        .insert(Person)
-        .insert(Name("Renzo Hume".to_string()));
-    commands
-        .spawn()
-        .insert(Person)
-        .insert(Name("Zayna Nieves".to_string()));
-}
-
-struct GreetTimer(Timer);
-
-fn greet_people(
-    time: Res<Time>, mut timer: ResMut<GreetTimer>, query: Query<&Name, With<Person>>) {
-    // update our timer with the time elapsed since the last update
-    // if that caused the timer to finish, we say hello to everyone
-    if timer.0.tick(time.delta()).just_finished() {
-        for name in query.iter() {
-            println!("hello {}!", name.0);
-        }
-    }
-}
-
-pub struct HelloPlugin;
-
-impl Plugin for HelloPlugin {
-    fn build(&self, app: &mut App) {
-        // the reason we call from_seconds with the true flag is to make the timer repeat itself
-        app.insert_resource(GreetTimer(Timer::from_seconds(2.0, true)))
-            .add_startup_system(add_people)
-            .add_system(greet_people);
-    }
 }
 
 fn main() {
@@ -53,8 +20,27 @@ fn main() {
             cocoa::appkit::NSApplicationActivationPolicy::NSApplicationActivationPolicyRegular,
         );
     }
+
     App::new()
+        .add_loading_state(
+            LoadingState::new(GameState::AssetLoading)
+                .continue_to_state(GameState::Playing)
+                .with_collection::<MyAssets>(),
+        )
+        .add_state(GameState::AssetLoading)
         .add_plugins(DefaultPlugins)
-        .add_plugin(HelloPlugin)
+        .add_plugin(FrameTimeDiagnosticsPlugin::default())
+        .add_system_set(SystemSet::on_enter(GameState::Playing).with_system(use_my_assets))
         .run();
+}
+
+#[derive(AssetCollection)]
+struct MyAssets {
+    #[asset(path = "images/player.png")]
+    player: Handle<Image>,
+
+}
+
+fn use_my_assets(_my_assets: Res<MyAssets>) {
+    // do something using the asset handles from the resource
 }

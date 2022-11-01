@@ -8,8 +8,10 @@ edition = "2021"
 
 [dependencies]
 bevy = { version = "0.8", features = ["dynamic", "ktx2"] } # the main ECS based game engine
+# bevy = { git = "https://github.com/bevyengine/bevy", features = ["dynamic", "ktx2"]}
+bevy_asset_loader = "0.12.1"
 cfg-if = "1" # allows running of code only on specific platforms
-rand = "0.8"
+rand = "0.8" # for any type of randomness ingame
 
 #fix macos window weirdness - not a good fix but it should work
 [target.'cfg(target_os = "macos")'.dependencies]
