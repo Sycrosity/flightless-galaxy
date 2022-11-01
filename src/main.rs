@@ -36,8 +36,8 @@ fn main() {
 
 #[derive(AssetCollection)]
 struct MyAssets {
-    #[asset(path = "images/player.png")]
-    player: Handle<Image>,
+    #[asset(path = "tilemaps/tileset.png")]
+    tileset: Handle<TextureAtlas>,
 
 }
 
