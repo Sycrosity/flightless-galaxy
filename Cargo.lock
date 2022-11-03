@@ -247,7 +247,6 @@ dependencies = [
  "bevy",
  "bevy_asset_loader_derive",
  "bevy_common_assets",
- "iyes_progress 0.5.0",
  "serde",
 ]
 
@@ -376,6 +375,34 @@ dependencies = [
 ]
 
 [[package]]
+name = "bevy_ecs_ldtk"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1a2779cbde0319990c90c459e0c9caa41861f86027fb037f0c4653d2963c0df8"
+dependencies = [
+ "anyhow",
+ "bevy",
+ "bevy_ecs_ldtk_macros",
+ "bevy_ecs_tilemap 0.7.0",
+ "hex",
+ "regex",
+ "serde",
+ "serde_json",
+ "thiserror",
+]
+
+[[package]]
+name = "bevy_ecs_ldtk_macros"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a09642d6549bbc505422f6eeade67842b36490907fad20e98877ea1a18f57b05"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
+]
+
+[[package]]
 name = "bevy_ecs_macros"
 version = "0.8.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -385,6 +412,28 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn",
+]
+
+[[package]]
+name = "bevy_ecs_tilemap"
+version = "0.7.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5ef56c77808aa1fc7379ce538bd9a1e4048794203b4f591f2d06131fc613a1cc"
+dependencies = [
+ "bevy",
+ "log",
+ "regex",
+]
+
+[[package]]
+name = "bevy_ecs_tilemap"
+version = "0.8.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "efd2e8dc13b82406dc2b7ce1b1463f9acb84ba3efa3857558ff9768ba9d7293d"
+dependencies = [
+ "bevy",
+ "log",
+ "regex",
 ]
 
 [[package]]
@@ -1409,10 +1458,11 @@ version = "0.1.0"
 dependencies = [
  "bevy",
  "bevy_asset_loader",
+ "bevy_ecs_ldtk",
+ "bevy_ecs_tilemap 0.8.0",
  "cfg-if 1.0.0",
  "cocoa",
  "console_error_panic_hook",
- "iyes_progress 0.6.0",
  "rand",
  "serde",
 ]
@@ -1804,26 +1854,6 @@ name = "itoa"
 version = "1.0.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4217ad341ebadf8d8e724e264f13e593e0648f5b3e94b3896a5df283be015ecc"
-
-[[package]]
-name = "iyes_progress"
-version = "0.5.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "58acce5d16c3a0568fa351a3161e340439070035648f9bbe5e2b30e9b58d21ec"
-dependencies = [
- "bevy_app",
- "bevy_ecs",
-]
-
-[[package]]
-name = "iyes_progress"
-version = "0.6.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9eaeccd2b11ae5271bf1fe04c94915b61cb1697fbba97dd313f5844381c57c38"
-dependencies = [
- "bevy_app",
- "bevy_ecs",
-]
 
 [[package]]
 name = "jni"

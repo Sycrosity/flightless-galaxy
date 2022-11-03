@@ -2,7 +2,7 @@
 
 use bevy::{
     app::AppExit,
-    asset::LoadState,
+    asset::{LoadState,AssetServer},
     diagnostic::{Diagnostics, FrameTimeDiagnosticsPlugin},
     prelude::*,
     render::texture::ImageSettings,
@@ -28,6 +28,8 @@ fn main() {
     }
 
     App::new()
+        .add_plugins(DefaultPlugins)
+        .add_plugin(FrameTimeDiagnosticsPlugin::default())
         //prevents blurry sprites
         .insert_resource(ImageSettings::default_nearest())
         .add_loading_state(
@@ -40,8 +42,6 @@ fn main() {
                 .with_collection::<MyAssets>(),
         )
         .add_state(GameState::AssetLoading)
-        .add_plugins(DefaultPlugins)
-        // .add_plugin(FrameTimeDiagnosticsPlugin::default())
         .add_system_set(SystemSet::on_enter(GameState::Playing).with_system(setup))
         .run();
 }
@@ -80,10 +80,10 @@ fn setup(
         })
         .insert(Player);
 
-    commands
-        .spawn_bundle(SpriteBundle {
-            texture: assets.ferris.clone(),
-            ..default()
-        })
-        .insert(Player);
+    // commands
+    //     .spawn_bundle(SpriteBundle {
+    //         texture: assets.ferris.clone(),
+    //         ..default()
+    //     })
+    //     .insert(Player);
 }

@@ -9,8 +9,11 @@ edition = "2021"
 [dependencies]
 # bevy = { version = "0.8", features = ["dynamic", "ktx2"] } # the main ECS based game engine
 # bevy = { git = "https://github.com/bevyengine/bevy", features = ["dynamic", "ktx2"]}
-bevy_asset_loader = { version = "0.12", features = ["dynamic_assets", "2d", "progress_tracking"] }
-iyes_progress = "0.6"
+bevy_asset_loader = { version = "0.12", features = ["dynamic_assets", "2d"] } #, "progress_tracking"
+# iyes_progress = "0.6"
+bevy_ecs_tilemap = "0.8"
+bevy_ecs_ldtk = "0.4"
+
 serde = "1.0"
 cfg-if = "1" # allows running of code only on specific platforms
 rand = "0.8" # for any type of randomness ingame
@@ -47,3 +50,17 @@ opt-level = 3
 
 [workspace]
 resolver = "2"
+
+[profile.wasm-release]
+# Use release profile as default values
+inherits = "release"
+# Optimize with size in mind, also try "s", sometimes it is better.
+# This doesn't increase compilation times compared to -O3, great improvements
+opt-level = "z"
+# Do a second optimization pass removing duplicate or unused code from dependencies.
+# Slows compile times, marginal improvements
+lto = "fat"
+
+# When building crates, optimize larger chunks at a time
+# Slows compile times, marginal improvements
+codegen-units = 1
