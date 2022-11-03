@@ -1,0 +1,19 @@
+({
+    "sprites.ferris": File (
+        path: "sprites/ferris.png",
+    ),
+    "tilemaps.tileset": TextureAtlas (
+        path: "tilemaps/tileset.png",
+        tile_size_x: 24.,
+        tile_size_y: 24.,
+        columns: 10,
+        rows: 3,
+    ),
+    "tilemaps.sprites": TextureAtlas (
+        path: "tilemaps/sprites.png",
+        tile_size_x: 18.,
+        tile_size_y: 18.,
+        columns: 20,
+        rows: 9,
+    ),
+})

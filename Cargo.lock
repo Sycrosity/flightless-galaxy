@@ -246,6 +246,9 @@ dependencies = [
  "anyhow",
  "bevy",
  "bevy_asset_loader_derive",
+ "bevy_common_assets",
+ "iyes_progress 0.5.0",
+ "serde",
 ]
 
 [[package]]
@@ -273,6 +276,18 @@ dependencies = [
  "bevy_utils",
  "parking_lot 0.12.1",
  "rodio",
+]
+
+[[package]]
+name = "bevy_common_assets"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3f7be9ee39085d8319d5cd853447b0b5c4f8b4bfd647aec91e2bd996e9db67ef"
+dependencies = [
+ "anyhow",
+ "bevy",
+ "ron",
+ "serde",
 ]
 
 [[package]]
@@ -1396,7 +1411,10 @@ dependencies = [
  "bevy_asset_loader",
  "cfg-if 1.0.0",
  "cocoa",
+ "console_error_panic_hook",
+ "iyes_progress 0.6.0",
  "rand",
+ "serde",
 ]
 
 [[package]]
@@ -1786,6 +1804,26 @@ name = "itoa"
 version = "1.0.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4217ad341ebadf8d8e724e264f13e593e0648f5b3e94b3896a5df283be015ecc"
+
+[[package]]
+name = "iyes_progress"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "58acce5d16c3a0568fa351a3161e340439070035648f9bbe5e2b30e9b58d21ec"
+dependencies = [
+ "bevy_app",
+ "bevy_ecs",
+]
+
+[[package]]
+name = "iyes_progress"
+version = "0.6.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9eaeccd2b11ae5271bf1fe04c94915b61cb1697fbba97dd313f5844381c57c38"
+dependencies = [
+ "bevy_app",
+ "bevy_ecs",
+]
 
 [[package]]
 name = "jni"

@@ -9,15 +9,32 @@ edition = "2021"
 [dependencies]
 # bevy = { version = "0.8", features = ["dynamic", "ktx2"] } # the main ECS based game engine
 # bevy = { git = "https://github.com/bevyengine/bevy", features = ["dynamic", "ktx2"]}
-bevy_asset_loader = "0.12.1"
+bevy_asset_loader = { version = "0.12", features = ["dynamic_assets", "2d", "progress_tracking"] }
+iyes_progress = "0.6"
+serde = "1.0"
 cfg-if = "1" # allows running of code only on specific platforms
 rand = "0.8" # for any type of randomness ingame
 
-[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
-bevy = { version = "0.8", features = ["dynamic", "ktx2"] } # the main ECS based game engine
-
 [target.'cfg(target_arch = "wasm32")'.dependencies]
-bevy = { version = "0.8", features = ["ktx2"] } # the main ECS based game engine
+console_error_panic_hook = "0.1"
+
+
+#features all targets should have
+[dependencies.bevy]
+version = "0.8"
+default-features = true
+features = ["ktx2"]
+
+#features only for targets that aren't wasm or musl
+[target.'cfg(not(any(target_arch = "wasm32",target_env = "musl")))'.dependencies.bevy]
+version = "0.8"
+default-features = true
+features = ["dynamic"]
+
+# [target.'cfg(target_env = "musl")'.dependencies.bevy]
+# version = "0.8"
+# default-features = true
+# features =["ktx2"]
 
 
 #fix macos window weirdness - not a good fix but it should work
