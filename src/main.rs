@@ -72,7 +72,6 @@ fn setup(
     mut commands: Commands,
     assets: Res<ImageAssets>,
     asset_server: Res<AssetServer>,
-
     texture_atlases: Res<Assets<TextureAtlas>>,
 ) {
     //any changes to the mesh will be reloaded automatically! Try making a change to Monkey.gltf.
@@ -98,7 +97,7 @@ fn setup(
             transform: Transform::from_xyz(0., -150., 0.),
             ..default()
         })
-        .insert(AnimationTimer(Timer::from_seconds(0.1, true)));
+        .insert(AnimationTimer(Timer::from_seconds(1., true)));
 }
 
 #[derive(Component)]

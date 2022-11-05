@@ -6,11 +6,20 @@ pub struct Player;
 #[derive(Bundle)]
 pub struct PlayerBundle {
 
-    pub _player: Player,
+    _player: Player,
+    direction: Dir,
 
 
     //
     #[bundle]
     sprite: SpriteSheetBundle,
 
+}
+
+#[derive(Component)]
+pub enum Dir {
+    Up,
+    Down,
+    Left,
+    Right
 }
