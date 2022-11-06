@@ -1,4 +1,4 @@
-#![allow(unused_imports)]
+// #![allow(unused_imports)]
 
 use bevy::{
     app::AppExit,
@@ -6,21 +6,27 @@ use bevy::{
     diagnostic::{Diagnostics, FrameTimeDiagnosticsPlugin},
     prelude::*,
     render::texture::ImageSettings,
-    sprite::collide_aabb::Collision,
+    sprite::{collide_aabb::Collision, MaterialMesh2dBundle},
 };
 
 use bevy_asset_loader::prelude::*;
 
+// use iyes_progress::prelude::*;
+// use iyes_loopless::prelude::*;
+
 mod components;
-mod inputs;
+// mod inputs;
+mod helpers;
 
 use components::*;
+
+use helpers::prelude::*;
 
 #[derive(Clone, Eq, PartialEq, Debug, Hash)]
 enum GameState {
     AssetLoading,
+    MainMenu,
     Playing,
-    Menu,
 }
 
 fn main() {
@@ -33,27 +39,18 @@ fn main() {
     }
 
     App::new()
-        .insert_resource(WindowDescriptor {
-            title: "Flightless Galaxy".to_string(),
-            // cursor_locked: true,
-            // cursor_visible: false,
-            ..default()
-        })
         .add_plugins(DefaultPlugins)
         .add_plugin(FrameTimeDiagnosticsPlugin::default())
-        //prevents blurry sprites
-        .insert_resource(ImageSettings::default_nearest())
+        .insert_resource(ImageSettings::default_nearest()) //prevents blurry sprite
         .add_loading_state(
-            //while the game loads, use the state AssetLoading - once finished, go to Playing
             LoadingState::new(GameState::AssetLoading)
                 .continue_to_state(GameState::Playing)
-                .with_dynamic_collections::<StandardDynamicAssetCollection>(vec![
-                    "game-assets.assets",
-                ])
+                .with_dynamic_collections::<StandardDynamicAssetCollection>(vec!["game-assets.assets"])
                 .with_collection::<ImageAssets>(),
         )
+        .add_startup_system(setup)
         .add_state(GameState::AssetLoading)
-        .add_system_set(SystemSet::on_enter(GameState::Playing).with_system(setup))
+        .add_system_set(SystemSet::on_enter(GameState::Playing).with_system(spawn_assets))
         .add_system_set(SystemSet::on_update(GameState::Playing).with_system(animate_sprite_system))
         .run();
 }
@@ -68,23 +65,33 @@ struct ImageAssets {
     sprites: Handle<TextureAtlas>,
 }
 
-fn setup(
+fn setup(mut commands: Commands) {
+    commands.spawn_bundle(Camera2dBundle::default());
+}
+
+fn spawn_assets(
     mut commands: Commands,
     assets: Res<ImageAssets>,
     asset_server: Res<AssetServer>,
     texture_atlases: Res<Assets<TextureAtlas>>,
+    mut meshes: ResMut<Assets<Mesh>>,
+    mut materials: ResMut<Assets<ColorMaterial>>,
 ) {
-    //any changes to the mesh will be reloaded automatically! Try making a change to Monkey.gltf.
-    //you should see the changes immediately show up in your app.
-
-    //camera
-    commands.spawn_bundle(Camera2dBundle::default());
+    commands.spawn_bundle(MaterialMesh2dBundle {
+        mesh: meshes.add(shape::Circle::new(100.).into()).into(),
+        material: materials.add(ColorMaterial::from(Color::PURPLE)),
+        ..default()
+    });
 
     //spawn player
     commands
         .spawn_bundle(SpriteBundle {
             texture: assets.ferris.clone(),
-            transform: Transform::from_scale(Vec3::new(0.1, 0.1, 0.1)),
+            transform: Transform::new_polar(
+                Polar::new(50., 270., 10.),
+                Quat::from_rotation_z(f32::to_radians(180.)),
+                Vec3::splat(0.1),
+            ),
             ..default()
         })
         .insert(Player);
@@ -94,7 +101,7 @@ fn setup(
         .spawn_bundle(SpriteSheetBundle {
             sprite: TextureAtlasSprite::new(0),
             texture_atlas: assets.sprites.clone(),
-            transform: Transform::from_xyz(0., -150., 0.),
+            transform: Transform::from_rtz(150., 270., 0.),
             ..default()
         })
         .insert(AnimationTimer(Timer::from_seconds(1., true)));

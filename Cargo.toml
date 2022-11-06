@@ -7,21 +7,31 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-# bevy = { version = "0.8", features = ["dynamic", "ktx2"] } # the main ECS based game engine
-# bevy = { git = "https://github.com/bevyengine/bevy", features = ["dynamic", "ktx2"]}
-bevy_asset_loader = { version = "0.12", features = ["dynamic_assets", "2d"] } #, "progress_tracking"
+#for loading assets with less boilerplate code
+bevy_asset_loader = { version = "0.12", features = ["dynamic_assets", "2d"] } #, /*"progress_tracking", "stageless", "progress_tracking_stageless"] }
+# #tracking asset loading progress
 # iyes_progress = "0.6"
-bevy_ecs_tilemap = "0.8"
-bevy_ecs_ldtk = "0.4"
-
+# #a better alternative to bevy states
+# iyes_loopless = "0.8"
 #for serialising data
 serde = "1.0"
 #serialising json files
 serde_json = "1.0"
 #for anything random related
 rand = "0.8"
+#allows running of code only on specific platforms
+cfg-if = "1"
+#for serialising and deserialising of enums into strings
+strum = { version = "0.24", features = ["derive"] }
+strum_macros = "0.24"
+#for gamepad input/output
+gilrs = "0.10"
+#for multiplayer networking and authentication
+bevy_renet = "0.0.5"
+renet = "0.0.9"
+#
+ron = "0.8"
 
-cfg-if = "1" # allows running of code only on specific platforms
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 console_error_panic_hook = "0.1"
