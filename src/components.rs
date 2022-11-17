@@ -6,54 +6,62 @@ use crate::prelude::*;
 #[derive(Component)]
 pub struct Player;
 
+#[derive(Component)]
+pub struct Controllable;
+
 #[derive(Bundle)]
 pub struct PlayerBundle {
     _player: Player,
-    pos: PolarCoords,
+    pos: PolarPos,
     #[bundle]
-    sprite_bundle: SpriteBundle
-
-    // #[bundle]
-    // sprite_bundle: SpriteSheetBundle,
+    sprite_bundle: SpriteBundle, // #[bundle]
+                                 // sprite_bundle: SpriteSheetBundle,
 }
 
 impl PlayerBundle {
-    pub fn new(pos: PolarCoords) -> Self {
+    pub fn new(pos: PolarPos, texture: Handle<Image>) -> Self {
         Self {
             _player: Player,
             pos,
             sprite_bundle: SpriteBundle {
-                texture: assets.ferris.clone(),
+                texture,
                 transform: Transform::new_polar(
-                    Polar::new(50., 270., 10.),
-                    Quat::from_rotation_z(f32::to_radians(180.)),
+                    Polar::new(pos.r, pos.theta, 10.),
+                    Quat::from_rotation_z(0.),
                     Vec3::splat(0.1),
                 ),
                 ..default()
-            }
+            },
         }
     }
 }
 
 ///a set of coordinates in the [polar coordinate system](https://en.wikipedia.org/wiki/Polar_coordinate_system))
-#[derive(Default, Component)]
-pub struct PolarCoords {
+#[derive(Clone, Copy, Default, Component)]
+pub struct PolarPos {
     /// The radius (distance) from the reference pole.
     r: f32,
     /// The polar angle from the reference direction.
     theta: f32,
 }
 
-impl PolarCoords {
-    /// Creates a new [`PolarCoords`].
+impl PolarPos {
+    /// Creates a new [`PolarPos`].
     pub fn new(r: f32, theta: f32) -> Self {
         Self { r, theta }
     }
 
-    // /// Creates a [`PolarCoords`] at 0,0.
-    // pub fn default() -> Self {
-    //     Self { r: 0., theta: 0. }
-    // }
+    // /// Creates a [`PolarPos`] at 0,0.
+    pub fn default() -> Self {
+        Self { r: 0., theta: 0. }
+    }
+
+    pub fn rotation(self) -> f32 {
+
+        self.theta.to_radians()
+
+    }
+
 }
 
 #[derive(Component)]
@@ -69,7 +77,7 @@ pub struct AnimationTimer(pub Timer);
 //     pub sprites: Handle<TextureAtlas>,
 // }
 
-#[derive(AssetCollection)]
+#[derive(AssetCollection, Resource, R)]
 pub struct ImageAssets {
     #[asset(texture_atlas(tile_size_x = 18., tile_size_y = 18., columns = 20, rows = 9))]
     #[asset(path = "tilemaps/tileset.png")]

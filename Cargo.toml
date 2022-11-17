@@ -8,7 +8,7 @@ edition = "2021"
 
 [dependencies]
 #for loading assets with less boilerplate code
-bevy_asset_loader = { version = "0.12", features = ["dynamic_assets", "2d"] } #, /*"progress_tracking", "stageless", "progress_tracking_stageless"] }
+bevy_asset_loader = { version = "0.13", features = ["standard_dynamic_assets", "2d"] } #, /*"progress_tracking", "stageless", "progress_tracking_stageless"] }
 # #tracking asset loading progress
 # iyes_progress = "0.6"
 # #a better alternative to bevy states
@@ -29,8 +29,10 @@ gilrs = "0.10"
 #for multiplayer networking and authentication
 bevy_renet = "0.0.5"
 renet = "0.0.9"
-#
+#a file format (Rusty Object Notation)
 ron = "0.8"
+#complex input handling
+leafwing-input-manager = "0.7"
 
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
@@ -38,13 +40,13 @@ console_error_panic_hook = "0.1"
 
 #features all targets should have
 [dependencies.bevy]
-version = "0.8"
+version = "0.9"
 default-features = true
 features = ["ktx2"]
 
 #features only for targets that aren't wasm or musl
 [target.'cfg(not(any(target_arch = "wasm32",target_env = "musl")))'.dependencies.bevy]
-version = "0.8"
+version = "0.9"
 default-features = true
 features = ["dynamic"]
 

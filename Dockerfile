@@ -8,17 +8,20 @@ RUN cargo install cargo-watch
 
 FROM chef AS planner
 COPY . .
+# RUN rustup toolchain install nightly
 RUN cargo chef prepare --recipe-path recipe.json
 
-FROM chef AS builder 
+FROM chef AS builder
 COPY --from=planner /app/recipe.json recipe.json
 # Build dependencies - this is the caching Docker layer!
+# RUN rustup toolchain install nightly
 RUN rustup target install wasm32-unknown-unknown
-RUN cargo chef cook --release --recipe-path recipe.json --target wasm32-unknown-unknown
+# RUN cargo chef cook --release --recipe-path recipe.json --target wasm32-unknown-unknown
+RUN cargo chef cook --recipe-path recipe.json --target wasm32-unknown-unknown
+
 
 # Build application
 COPY . .
-
 RUN cargo build --release --target wasm32-unknown-unknown
 RUN /app/tools/wasm-bindgen --out-dir ./dist/ --target web ./target/wasm32-unknown-unknown/release/flightless-galaxy.wasm
 

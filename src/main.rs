@@ -4,13 +4,15 @@ use bevy::{
     app::AppExit,
     asset::{AssetServer, LoadState},
     diagnostic::{Diagnostics, FrameTimeDiagnosticsPlugin},
-    log::{Level, LogSettings},
+    log::{Level, LogPlugin, LogSettings},
     prelude::*,
     render::texture::ImageSettings,
     sprite::{collide_aabb::Collision, MaterialMesh2dBundle},
 };
 
 use bevy_asset_loader::prelude::*;
+
+use leafwing_input_manager::prelude::*;
 
 // use iyes_progress::prelude::*;
 // use iyes_loopless::prelude::*;
@@ -34,14 +36,16 @@ fn main() {
     }
 
     App::new()
-        .add_plugins(DefaultPlugins)
+        .add_plugins(
+            DefaultPlugins
+                .set(ImagePlugin::default_nearest())
+                .set(LogPlugin {
+                    level: Level::DEBUG,
+                    ..default()
+                }),
+        )
         .add_plugin(FrameTimeDiagnosticsPlugin::default())
-        .insert_resource(ImageSettings::default_nearest())
-        .insert_resource(LogSettings {
-            // filter:,
-            level: Level::DEBUG,
-            ..default()
-        }) //prevents blurry sprite
+        // .add_plugin(InputManagerPlugin::<GameInputs>::default())
         .add_loading_state(
             LoadingState::new(GameState::AssetLoading)
                 .continue_to_state(GameState::Playing)
@@ -54,7 +58,13 @@ fn main() {
         .add_state(GameState::AssetLoading)
         .add_system_set(SystemSet::on_enter(GameState::Playing).with_system(systems::spawn_assets))
         .add_system_set(
-            SystemSet::on_update(GameState::Playing).with_system(systems::animate_sprite_system),
+            SystemSet::on_update(GameState::Playing)
+                .with_system(systems::animate_sprite_system)
+                .with_system(
+                    systems::player_movement
+                        // `player_movement` must always run after `input_handling`
+                        .after(systems::input_handling),
+                ),
         )
         .run();
 }

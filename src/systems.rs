@@ -4,6 +4,7 @@ use bevy::{
     prelude::*,
     sprite::{collide_aabb::Collision, MaterialMesh2dBundle},
 };
+use leafwing_input_manager::prelude::*;
 
 pub fn spawn_assets(
     mut commands: Commands,
@@ -21,9 +22,19 @@ pub fn spawn_assets(
 
     //spawn player
     commands
-        .spawn_bundle(PlayerBundle::new());
+        .spawn_bundle(PlayerBundle::new(
+            PolarPos::new(0., 0.),
+            assets.ferris.clone(),
+        ))
+        .insert(Controllable);
+    // .insert_bundle(InputManagerBundle::<GameInputs> {
+    //     // Stores "which actions are currently pressed"
+    //     action_state: ActionState::default(),
+    //     // Describes how to convert from player inputs into those actions
+    //     input_map: InputMap::new([(KeyCode::Space, GameInputs::Jump)]),
+    // });
 
-    //spawn a
+    //spawn a sprite
     commands
         .spawn_bundle(SpriteSheetBundle {
             sprite: TextureAtlasSprite::new(0),
@@ -31,7 +42,7 @@ pub fn spawn_assets(
             transform: Transform::from_rtz(150., 270., 0.),
             ..default()
         })
-        .insert(AnimationTimer(Timer::from_seconds(1., true)));
+        .insert(AnimationTimer(Timer::from_seconds(1., TimerMode::Repeating)));
 }
 
 pub fn animate_sprite_system(
@@ -45,3 +56,7 @@ pub fn animate_sprite_system(
         }
     }
 }
+
+pub fn player_movement() {}
+
+pub fn input_handling() {}

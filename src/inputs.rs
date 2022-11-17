@@ -1,6 +1,7 @@
+pub mod game_inputs;
 pub mod keyboard;
 pub mod states;
 
 pub mod prelude {
-    pub use crate::helpers::polar::{Polar, TransformExt, Vec3Ext};
+    pub use super::game_inputs::*;
 }
