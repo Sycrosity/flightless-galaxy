@@ -1,0 +1,39 @@
+[tasks.run]
+command = "cargo"
+args = ["run", "--profile", "dev"]
+
+[tasks.build]
+command = "cargo"
+args = ["build", "--release"]
+
+[tasks.build-dev]
+command = "cargo"
+args = ["build", "--profile", "dev"]
+
+[tasks.run-wasm]
+command = "cargo"
+args = ["run", "--target", "wasm32-unknown-unknown", "--profile", "wasm-dev"]
+dependencies = ["install-wasm"]
+
+[tasks.watch-wasm]
+command = "cargo"
+args = ["run", "--target", "wasm32-unknown-unknown", "--profile", "wasm-dev"]
+dependencies = ["install-wasm"]
+watch = { delay = 10.0, watch = ["./src", "./assets"] }
+
+[tasks.run-wasm-release]
+command = "cargo"
+args = ["run", "--target", "wasm32-unknown-unknown", "--profile", "wasm-release"]
+dependencies = ["install-wasm"]
+
+[tasks.install-wasm]
+install_crate = { crate_name = "wasm-server-runner", bin = "wasm-server-runner"}
+command = "rustup"
+args = ["target", "install", "wasm32-unknown-unknown"]
+# dependencies = [
+#     "install-wasm-prereqs"
+# ]
+
+# [tasks.install-wasm-prereqs]
+# install-crate = { crate_name = "wasm-server-runner", bin = "wasm-server-runner"}
+

@@ -2,3 +2,5 @@
 .DS_Store
 docker-compose.yml
 /tools
+
+*.code-workspace

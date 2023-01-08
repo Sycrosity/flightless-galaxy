@@ -1,32 +1,23 @@
-// #![allow(unused_imports)]
+//stop windows from opening a console window on app start
+#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 use bevy::{
-    app::AppExit,
-    asset::{AssetServer, LoadState},
-    diagnostic::{Diagnostics, FrameTimeDiagnosticsPlugin},
-    log::{Level, LogPlugin, LogSettings},
+    diagnostic::{EntityCountDiagnosticsPlugin, FrameTimeDiagnosticsPlugin, LogDiagnosticsPlugin},
     prelude::*,
-    render::texture::ImageSettings,
-    sprite::{collide_aabb::Collision, MaterialMesh2dBundle},
 };
 
 use bevy_asset_loader::prelude::*;
+use bevy_common_assets::ron::RonAssetPlugin;
 
+use bevy_inspector_egui::quick::WorldInspectorPlugin;
 use leafwing_input_manager::prelude::*;
-
-// use iyes_progress::prelude::*;
-// use iyes_loopless::prelude::*;
 
 use flightless_galaxy::{prelude::*, systems};
 
-#[derive(Clone, Eq, PartialEq, Debug, Hash)]
-enum GameState {
-    AssetLoading,
-    MainMenu,
-    Playing,
-}
-
 fn main() {
+    //no longer applies!
+    /*
+    //fix a macos new window bug
     #[cfg(target_os = "macos")]
     unsafe {
         use cocoa::appkit::NSApplication as _;
@@ -34,41 +25,81 @@ fn main() {
             cocoa::appkit::NSApplicationActivationPolicy::NSApplicationActivationPolicyRegular,
         );
     }
+    */
+
+    #[cfg(target_arch = "wasm32")]
+    console_error_panic_hook::set_once();
 
     App::new()
         .add_plugins(
             DefaultPlugins
-                .set(ImagePlugin::default_nearest())
-                .set(LogPlugin {
-                    level: Level::DEBUG,
+                .set(ImagePlugin::default_nearest()) //prevents blurry sprites
+                // .set(LogPlugin {
+                //     level: bevy::log::Level::INFO,
+                //     ..default()
+                // })
+                .set(AssetPlugin {
+                    watch_for_changes: true,
+                    ..default()
+                }) //hotreloading of files
+                .set(WindowPlugin {
+                    window: WindowDescriptor {
+                        // fill the entire browser window
+                        fit_canvas_to_parent: true,
+                        ..default()
+                    },
                     ..default()
                 }),
         )
+        .add_plugin(LogDiagnosticsPlugin::default())
         .add_plugin(FrameTimeDiagnosticsPlugin::default())
-        // .add_plugin(InputManagerPlugin::<GameInputs>::default())
+        .add_plugin(EntityCountDiagnosticsPlugin::default())
+        .add_plugin(WorldInspectorPlugin)
+        // .register_type::<ActionState<GameAction>>()
+        // .register_type::<InputMap<GameAction>>()
+        .register_type::<AnimationTimer>()
+        .register_type::<Controllable>()
+        .register_type::<Speed>()
+        // .register_type::<Planet>()
+        .add_plugin(RonAssetPlugin::<StandardDynamicAssetCollection>::new(&[
+            "assets.ron",
+        ]))
+        // .add_plugin(RonAssetPlugin::)
+        //This plugin maps inputs to an input-type agnostic action-state
+        .add_plugin(InputManagerPlugin::<GameAction>::default())
         .add_loading_state(
             LoadingState::new(GameState::AssetLoading)
                 .continue_to_state(GameState::Playing)
-                // .with_dynamic_collections::<StandardDynamicAssetCollection>(vec![
-                //     "game-assets.assets",
-                // ])
+                // .set_standard_dynamic_asset_collection_file_endings(vec![".ron"])
+                .with_dynamic_collections::<StandardDynamicAssetCollection>(vec!["game.assets.ron"])
                 .with_collection::<ImageAssets>(),
         )
-        .add_startup_system(setup)
         .add_state(GameState::AssetLoading)
-        .add_system_set(SystemSet::on_enter(GameState::Playing).with_system(systems::spawn_assets))
+        .add_startup_system(setup)
+        .add_system_set(
+            SystemSet::on_enter(GameState::Playing).with_system(systems::spawn_game_assets),
+        )
         .add_system_set(
             SystemSet::on_update(GameState::Playing)
                 .with_system(systems::animate_sprite_system)
+                // .with_system(keymouse_inputs)
                 .with_system(
-                    systems::player_movement
-                        // `player_movement` must always run after `input_handling`
-                        .after(systems::input_handling),
-                ),
+                    systems::player_movement, //`player_movement` must always run after `input_handling`
+                ), //.after(systems::input_handling())
         )
         .run();
 }
 
 fn setup(mut commands: Commands) {
-    commands.spawn_bundle(Camera2dBundle::default());
+    commands.spawn((
+        Camera2dBundle {
+            /*
+            projection: OrthographicProjection {
+                scaling_mode: ScalingMode::FixedVertical(16.),
+                ..default()
+            },*/
+            ..default()
+        },
+        Name::new("2DCamera [1]"),
+    ));
 }
