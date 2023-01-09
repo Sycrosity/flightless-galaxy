@@ -37,7 +37,8 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y g++ pkg-config libx11-dev libasound2-dev libudev-dev
       - uses: actions-rs/cargo@v1
         with:
-          command: test --features dev
+          command: test
+          args: --features dev
 
   fmt:
     name: Rustfmt
