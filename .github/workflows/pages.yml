@@ -32,12 +32,14 @@ jobs:
         uses: actions/checkout@v3
       - name: Build project for wasm
         run: |
-          sudo apt-get update && sudo apt-get install -y g++ pkg-config libx11-dev libasound2-dev libudev-dev
           mkdir _site
           mv wasm/index.html ./_site/index.html
-          curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
-          wasm-pack build --target web -d _site/pkg
-          mv assets ./_site/assets
+        #fix at some point
+        # sudo apt-get update && sudo apt-get install -y g++ pkg-config libx11-dev libasound2-dev libudev-dev
+        # curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+        # wasm-pack build --target web -d _site/pkg
+        # mv assets ./_site/assets
+
       - name: Setup Pages
         uses: actions/configure-pages@v2
       - name: Upload artifact

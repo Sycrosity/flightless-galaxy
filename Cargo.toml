@@ -33,8 +33,8 @@ gilrs = "0.10"
 # bevy_renet = "0.0.6"
 # renet = "0.0.10"
 #for multiplayer networking and authentication
-ggrs = "0.9"
-bevy_ggrs = "0.10"
+# bevy_renet = "0.0"
+# renet = "0.0"
 #a file format (Rusty Object Notation)
 ron = "0.8"
 #for time
