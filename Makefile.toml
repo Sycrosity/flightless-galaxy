@@ -23,6 +23,8 @@ command = "cargo"
 args = ["run", "--features", "dev"]
 watch = { delay = 10.0, watch = ["./src", "./assets"] }
 
+#wasm tasks
+
 [tasks.run-wasm]
 command = "cargo"
 args = ["run", "--target", "wasm32-unknown-unknown", "--profile", "wasm-dev"]
@@ -43,12 +45,8 @@ dependencies = ["install-wasm"]
 install_crate = { crate_name = "wasm-server-runner", bin = "wasm-server-runner"}
 command = "rustup"
 args = ["target", "install", "wasm32-unknown-unknown"]
-# dependencies = [
-#     "install-wasm-prereqs"
-# ]
 
-# [tasks.install-wasm-prereqs]
-# install-crate = { crate_name = "wasm-server-runner", bin = "wasm-server-runner"}
+#action related tasks
 
 [tasks.clippy]
 command = "cargo"
@@ -66,7 +64,7 @@ args = ["check", "--features", "dev"]
 command = "cargo"
 args = ["test", "--features", "dev"]
 
-
+#test suite 
 
 [tasks.test-suite]
 dependencies = ["test"]
