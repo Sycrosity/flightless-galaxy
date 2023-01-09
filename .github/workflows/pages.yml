@@ -4,7 +4,7 @@ name: Deploy static content to Pages
 on:
   # Runs on pushes targeting the default branch
   push:
-    branches: ["master"]
+    branches: ["main"]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -30,13 +30,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Build project
+      - name: Build project for wasm
         run: |
+          sudo apt-get update && sudo apt-get install -y g++ pkg-config libx11-dev libasound2-dev libudev-dev
           mkdir _site
-          mv index.html ./_site/index.html
+          mv wasm/index.html ./_site/index.html
           curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
           wasm-pack build --target web -d _site/pkg
-          mv res ./_site/res
+          mv assets ./_site/assets
       - name: Setup Pages
         uses: actions/configure-pages@v2
       - name: Upload artifact

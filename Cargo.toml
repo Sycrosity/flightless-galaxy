@@ -105,3 +105,6 @@ opt-level = "z"
 # When building crates, optimize larger chunks at a time
 # Slows compile times, marginal improvements
 # codegen-units = 1
+
+[lib]
+crate-type = ["cdylib", "rlib"]

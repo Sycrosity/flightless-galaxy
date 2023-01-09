@@ -1,6 +1,12 @@
 /target
-.DS_Store
-docker-compose.yml
 /tools
 
+#vscode
 *.code-workspace
+.vscode
+
+#docker
+docker-compose.yml
+
+#macos
+.DS_Store

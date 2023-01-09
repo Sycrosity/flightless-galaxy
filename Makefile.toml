@@ -1,6 +1,6 @@
 [tasks.run]
 command = "cargo"
-args = ["run", "--profile", "dev"]
+args = ["run", "--features", "dev"]
 
 [tasks.build]
 command = "cargo"
@@ -8,7 +8,20 @@ args = ["build", "--release"]
 
 [tasks.build-dev]
 command = "cargo"
-args = ["build", "--profile", "dev"]
+args = ["build", "--features", "dev"]
+
+[tasks.actions]
+dependencies = [
+    "fmt",
+    "check",
+    "clippy",
+    "test-suite",
+]
+
+[tasks.watch]
+command = "cargo"
+args = ["run", "--features", "dev"]
+watch = { delay = 10.0, watch = ["./src", "./assets"] }
 
 [tasks.run-wasm]
 command = "cargo"
@@ -37,3 +50,23 @@ args = ["target", "install", "wasm32-unknown-unknown"]
 # [tasks.install-wasm-prereqs]
 # install-crate = { crate_name = "wasm-server-runner", bin = "wasm-server-runner"}
 
+[tasks.clippy]
+command = "cargo"
+args = ["clippy", "--features", "dev"]
+
+[tasks.fmt]
+command = "cargo"
+args = ["fmt"]
+
+[tasks.check]
+command = "cargo"
+args = ["check", "--features", "dev"]
+
+[tasks.test]
+command = "cargo"
+args = ["test", "--features", "dev"]
+
+
+
+[tasks.test-suite]
+dependencies = ["test"]
