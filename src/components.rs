@@ -2,6 +2,7 @@ use bevy::prelude::*;
 use bevy_asset_loader::prelude::*;
 use bevy_inspector_egui::{inspector_options::std_options::*, prelude::*};
 use leafwing_input_manager::prelude::*;
+use leafwing_input_manager::user_input::InputKind;
 
 use crate::prelude::*;
 
@@ -59,45 +60,45 @@ impl PlayerBundle {
     }
 
     pub fn default_input_map() -> InputMap<GameAction> {
-        // This allows us to replace `ArpgAction::Up` with `Up`,
-        // significantly reducing boilerplate
+        // This allows us to replace `GameAction::Up` with `Up`, `GamepadButtonType::South` with `Gamepad::South`, ect., significantly reducing boilerplate
         use GameAction::*;
+        use InputKind::*;
+
+        type Key = KeyCode;
+        type Scan = ScanCode;
+        type Mouse = MouseButton;
+        type Gamepad = GamepadButtonType;
+
         let mut input_map = InputMap::default();
-
         //movement
-        input_map.insert(KeyCode::Up, Up);
-        input_map.insert(KeyCode::W, Up);
-        input_map.insert(GamepadButtonType::DPadUp, Up);
+        // .insertScanCode, Up)
+        input_map
+            .insert(Key::W, Up)
+            .insert(Gamepad::DPadUp, Up)
+            .insert(Key::Down, Down)
+            .insert(Key::S, Down)
+            .insert(Gamepad::DPadDown, Down)
+            .insert(Key::Left, Left)
+            .insert(Key::A, Left)
+            .insert(Gamepad::DPadLeft, Left)
+            .insert(Key::Right, Right)
+            .insert(Key::D, Right)
+            .insert(Gamepad::DPadRight, Right)
+            .insert(Key::Space, Jump)
+            .insert(Gamepad::South, Jump)
+            //abilities
+            // .insert(Key::Q, Ability1)
+            // .insert(Gamepad::West, Ability1)
+            .insert(Mouse::Left, Primary)
+            // .insert(Key::W, Ability2)
+            // .insert(Gamepad::North, Ability2)
+            .insert(Mouse::Right, Secondary)
+            // .insert(Key::E, Ability3)
+            // .insert(Gamepad::East, Ability3)
 
-        input_map.insert(KeyCode::Down, Down);
-        input_map.insert(KeyCode::S, Down);
-        input_map.insert(GamepadButtonType::DPadDown, Down);
-
-        input_map.insert(KeyCode::Left, Left);
-        input_map.insert(KeyCode::A, Left);
-        input_map.insert(GamepadButtonType::DPadLeft, Left);
-
-        input_map.insert(KeyCode::Right, Right);
-        input_map.insert(KeyCode::D, Right);
-        input_map.insert(GamepadButtonType::DPadRight, Right);
-
-        input_map.insert(KeyCode::Space, Jump);
-        input_map.insert(GamepadButtonType::South, Jump);
-
-        //abilities
-        // input_map.insert(KeyCode::Q, Ability1);
-        // input_map.insert(GamepadButtonType::West, Ability1);
-        input_map.insert(MouseButton::Left, Primary);
-
-        // input_map.insert(KeyCode::W, Ability2);
-        // input_map.insert(GamepadButtonType::North, Ability2);
-        input_map.insert(MouseButton::Right, Secondary);
-
-        // input_map.insert(KeyCode::E, Ability3);
-        // input_map.insert(GamepadButtonType::East, Ability3);
-
-        // input_map.insert(KeyCode::R, Ultimate);
-        // input_map.insert(GamepadButtonType::LeftTrigger2, Ultimate);
+            // .insert(Key::R, Ultimate)
+            // .insert(Gamepad::LeftTrigger2, Ultimate)
+            ;
 
         input_map
     }

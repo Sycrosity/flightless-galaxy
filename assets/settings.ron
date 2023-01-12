@@ -1,23 +1,32 @@
+// GameAction (
+
+//     Primary,
+//     Secondary,
+//     Up,
+//     Down,
+//     Left,
+//     Right,
+//     Jump,
+// )
+
 GameConfig(
         
-    mouse_sensitivity: 1.4,
+    // mouse_sensitivity: 1.4,
+    //Key = bevy::input::keyboard::KeyCode;
+    //Scan = bevy::input::keyboard::ScanCode;
+    //Mouse = bevy::input::mouse::MouseButton;
+    //Gamepad = bevy::input::gamepad::GamepadButtonType;
+
     key_bindings: {
-        "up": Up,
-        "down": Down,
-        "left": Left,
-        "right": Right,
-        
-        // Uncomment to enable WASD controls
-        /*
-        "W": Up,
-        "A": Down,
-        "S": Left,
-        "D": Right,
-        */
+        Key::Down: Up,
+        Key::Up: Down,
+        Key::Right: Left,
+        Key::Left: Right,
+
+
     },
-    
-    difficulty_options: (
-        start_difficulty: Easy,
-        adaptive: false,
-    ),
+    gamepad_bindings: {
+        
+    }
 )
+
