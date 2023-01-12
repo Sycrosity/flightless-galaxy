@@ -11,9 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions-rs/toolchain@v1
-        with:
-          profile: minimal
+      # - uses: actions-rs/toolchain@v1
+      #   with:
+      #     profile: minimal
           # toolchain: stable
           # override: true
       - name: install other dependencies
@@ -28,9 +28,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions-rs/toolchain@v1
-        with:
-          profile: minimal
+      # - uses: actions-rs/toolchain@v1
+      #   with:
+      #     profile: minimal
           # toolchain: stable
           # override: true
       - name: install other dependencies
@@ -45,9 +45,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions-rs/toolchain@v1
-        with:
-          profile: minimal
+      # - uses: actions-rs/toolchain@v1
+      #   with:
+      #     profile: minimal
           # toolchain: nightly
           # override: true
       - run: rustup component add rustfmt
@@ -63,9 +63,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions-rs/toolchain@v1
-        with:
-          profile: minimal
+      # - uses: actions-rs/toolchain@v1
+      #   with:
+      #     profile: minimal
           # toolchain: stable
           # override: true
       - run: rustup component add clippy
