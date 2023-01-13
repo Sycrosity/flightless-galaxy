@@ -32,17 +32,13 @@ gilrs = "0.10"
 #(if it gets wasm support in future) - for multiplayer networking and authentication
 # bevy_renet = "0.0.6"
 # renet = "0.0.10"
-#for multiplayer networking and authentication
-# bevy_renet = "0.0"
-# renet = "0.0"
 #a file format (Rusty Object Notation)
 ron = "0.8"
 #for time
 instant = "0.1"
-#for debug - disable for release
-#chance back when next version is released - current version doesn't have needed features
-# bevy-inspector-egui = "0.16"
-bevy-inspector-egui = { git = "https://github.com/jakobhellermann/bevy-inspector-egui" }
+#for debug - disable for release?
+bevy-inspector-egui = "0.16"
+# bevy-inspector-egui = { git = "https://github.com/jakobhellermann/bevy-inspector-egui" }
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 console_error_panic_hook = "0.1"
