@@ -85,7 +85,7 @@ pub async fn run_server(options: Options, output: WasmBindgenOutput) -> Result<(
         address_string +=
             &(":".to_owned() + &pick_port::pick_free_port(1334, 10).unwrap_or(80).to_string());
     }
-    
+
     let addr: SocketAddr = address_string.parse().expect("Couldn't parse address");
 
     if options.https {
