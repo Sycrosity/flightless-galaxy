@@ -1,0 +1,5 @@
+#for alpine docker builds, aswell as no-dep environments
+[toolchain]
+# channel = "nightly"
+targets = ["x86_64-unknown-linux-musl"]
+profile = "minimal"

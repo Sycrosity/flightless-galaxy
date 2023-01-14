@@ -1,3 +1,4 @@
+#for use with a release dockerfile
 [toolchain]
 channel = "nightly"
 targets = ["wasm32-unknown-unknown"]
