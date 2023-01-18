@@ -12,8 +12,20 @@ jobs:
           - flags: --target wasm32-unknown-unknown --profile wasm-release
             os: ubuntu-latest
             rustup: wasm32-unknown-unknown
-          - rustup: stable --profile minimal
+          - rustup: nightly --profile minimal 
           - flags: --features dev
+          - os: ubuntu-latest
+            deps: |
+              sudo apt-get update &&
+              sudo apt-get install -y g++ pkg-config libx11-dev libasound2-dev libudev-dev
+          - os: macos-latest
+            deps: |
+              brew install michaeleisel/zld/zld
+          - os: windows-latest
+            deps: |
+              cargo install -f cargo-binutils
+              rustup component add llvm-tools-preview
+
 
         # actions: ["clippy"]
 
@@ -29,11 +41,14 @@ jobs:
           rustup set auto-self-update disable
           rustup toolchain install ${{ matrix.rustup }}
           rustup component add clippy rustfmt
-      - name: install other dependencies
-        run: sudo apt-get update && sudo apt-get install -y g++ pkg-config libx11-dev libasound2-dev libudev-dev
+      - name: install platform specific dependencies
+        run: ${{ matrix.deps }}
       - uses: Swatinem/rust-cache@v2
-      - run: |
-          cargo fmt --all
-          cargo check ${{ matrix.flags }}
-          cargo clippy ${{ matrix.flags }}
-          cargo test ${{ matrix.flags }}
+      - name: run cargo fmt
+        run:  cargo fmt --all --check
+      - name: run cargo check
+        run:  cargo check ${{ matrix.flags }}
+      - name: run cargo clippy
+        run:  cargo clippy ${{ matrix.flags }}
+      - name: run cargo test
+        run:  cargo test ${{ matrix.flags }}
