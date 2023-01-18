@@ -41,9 +41,10 @@ jobs:
           rustup set auto-self-update disable
           rustup toolchain install ${{ matrix.rustup }}
           rustup component add clippy rustfmt
+      - uses: Swatinem/rust-cache@v2
+      #cache this for macos!
       - name: install platform specific dependencies
         run: ${{ matrix.deps }}
-      - uses: Swatinem/rust-cache@v2
       - name: run cargo fmt
         run:  cargo fmt --all --check
       - name: run cargo check
