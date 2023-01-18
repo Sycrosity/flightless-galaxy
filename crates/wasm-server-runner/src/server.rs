@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use std::net::SocketAddr;
 
-use axum::headers::HeaderName;
+// use axum::headers::HeaderName;
 use axum::http::{HeaderValue, StatusCode, Uri};
 use axum::response::{Html, IntoResponse, Response};
 use axum::routing::{get, get_service};
@@ -11,7 +11,7 @@ use axum_server_dual_protocol::ServerExt;
 use tower::ServiceBuilder;
 use tower_http::compression::CompressionLayer;
 use tower_http::services::ServeDir;
-use tower_http::set_header::SetResponseHeaderLayer;
+// use tower_http::set_header::SetResponseHeaderLayer;
 
 use crate::wasm_bindgen::WasmBindgenOutput;
 use crate::Result;
@@ -83,8 +83,9 @@ pub async fn run_server(options: Options, output: WasmBindgenOutput) -> Result<(
     let mut address_string = options.address;
     if !address_string.contains(":") {
         address_string +=
-            &(":".to_owned() + &pick_port::pick_free_port(1334, 10).unwrap_or(1334).to_string());
+            &(":".to_owned() + &pick_port::pick_free_port(1334, 10).unwrap_or(80).to_string());
     }
+
     let addr: SocketAddr = address_string.parse().expect("Couldn't parse address");
 
     if options.https {
