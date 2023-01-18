@@ -1,6 +1,6 @@
 name: Continuous Integration
 
-on: [push, pull_request]
+on: [push]
 
 jobs:
   simple:
@@ -17,15 +17,12 @@ jobs:
 
         # actions: ["clippy"]
 
-    name: Test `cargo check/test` on ${{ matrix.os }}
+    name: Continuous Integrtion on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
-
     env:
       CARGO_TERM_COLOR: always
-
     steps:
       - uses: actions/checkout@v3
-
       # When rustup is updated, it tries to replace its binary, which on Windows is somehow locked.
       # This can result in the CI failure, see: https://github.com/rust-lang/rustup/issues/3029
       - run: |
@@ -35,9 +32,6 @@ jobs:
       - name: install other dependencies
         run: sudo apt-get update && sudo apt-get install -y g++ pkg-config libx11-dev libasound2-dev libudev-dev
       - uses: Swatinem/rust-cache@v2
-        # with: 
-        #   workspaces: tests
-
       - run: |
           cargo fmt --all
           cargo check ${{ matrix.flags }}
