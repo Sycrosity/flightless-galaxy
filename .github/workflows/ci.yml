@@ -1,77 +1,45 @@
-name: Continuous integration
+name: Continuous Integration
 
-on: push
-
-env:
-  CARGO_TERM_COLOR: always
+on: [push, pull_request]
 
 jobs:
-  check:
-    name: Check
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      # - uses: actions-rs/toolchain@v1
-      #   with:
-      #     profile: minimal
-          # toolchain: stable
-          # override: true
-      - name: install other dependencies
-        run: sudo apt-get update && sudo apt-get install -y g++ pkg-config libx11-dev libasound2-dev libudev-dev
-      - uses: actions-rs/cargo@v1
-        with:
-          command: check
-          args: --features dev
+  simple:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        include:
+          - flags: --target wasm32-unknown-unknown --profile wasm-release
+            os: ubuntu-latest
+            rustup: wasm32-unknown-unknown
+          - rustup: stable --profile minimal
+          - flags: --features dev
 
-  test:
-    name: Test Suite
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      # - uses: actions-rs/toolchain@v1
-      #   with:
-      #     profile: minimal
-          # toolchain: stable
-          # override: true
-      - name: install other dependencies
-        run: sudo apt-get update && sudo apt-get install -y g++ pkg-config libx11-dev libasound2-dev libudev-dev
-      - uses: actions-rs/cargo@v1
-        with:
-          command: test
-          args: --features dev
+        # actions: ["clippy"]
 
-  fmt:
-    name: Rustfmt
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      # - uses: actions-rs/toolchain@v1
-      #   with:
-      #     profile: minimal
-          # toolchain: nightly
-          # override: true
-      - run: rustup component add rustfmt
-      - name: install other dependencies
-        run: sudo apt-get update && sudo apt-get install -y g++ pkg-config libx11-dev libasound2-dev libudev-dev
-      - uses: actions-rs/cargo@v1
-        with:
-          command: fmt
-          args: --all -- --check
+    name: Test `cargo check/test` on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
 
-  clippy:
-    name: Clippy
-    runs-on: ubuntu-latest
+    env:
+      CARGO_TERM_COLOR: always
+
     steps:
       - uses: actions/checkout@v3
-      # - uses: actions-rs/toolchain@v1
-      #   with:
-      #     profile: minimal
-          # toolchain: stable
-          # override: true
-      - run: rustup component add clippy
+
+      # When rustup is updated, it tries to replace its binary, which on Windows is somehow locked.
+      # This can result in the CI failure, see: https://github.com/rust-lang/rustup/issues/3029
+      - run: |
+          rustup set auto-self-update disable
+          rustup toolchain install ${{ matrix.rustup }}
+          rustup component add clippy rustfmt
       - name: install other dependencies
         run: sudo apt-get update && sudo apt-get install -y g++ pkg-config libx11-dev libasound2-dev libudev-dev
-      - uses: actions-rs/cargo@v1
-        with:
-          command: clippy
-          args: --features dev -- -D warnings
+      - uses: Swatinem/rust-cache@v2
+        # with: 
+        #   workspaces: tests
+
+      - run: |
+          cargo fmt --all
+          cargo check ${{ matrix.flags }}
+          cargo clippy ${{ matrix.flags }}
+          cargo test ${{ matrix.flags }}
