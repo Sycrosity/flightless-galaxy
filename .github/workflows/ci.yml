@@ -46,6 +46,8 @@ jobs:
           rustup toolchain install ${{ matrix.rustup }}
           rustup component add clippy rustfmt
       - uses: Swatinem/rust-cache@v2
+        with:
+          key: flightless-galaxy-v1 # increment this to bust the cache if needed
       #cache this for macos!
       - name: install platform specific dependencies
         run: ${{ matrix.deps }}
