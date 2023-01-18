@@ -15,17 +15,6 @@ use leafwing_input_manager::prelude::*;
 use flightless_galaxy::{prelude::*, systems};
 
 fn main() {
-    //no longer applies!
-    /*
-    //fix a macos new window bug
-    #[cfg(target_os = "macos")]
-    unsafe {
-        use cocoa::appkit::NSApplication as _;
-        cocoa::appkit::NSApp().setActivationPolicy_(
-            cocoa::appkit::NSApplicationActivationPolicy::NSApplicationActivationPolicyRegular,
-        );
-    }
-    */
 
     #[cfg(target_arch = "wasm32")]
     console_error_panic_hook::set_once();
