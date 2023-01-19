@@ -2,7 +2,7 @@ use bevy::prelude::*;
 use bevy_asset_loader::prelude::*;
 use bevy_inspector_egui::{inspector_options::std_options::*, prelude::*};
 use leafwing_input_manager::prelude::*;
-use leafwing_input_manager::user_input::InputKind;
+
 
 use crate::prelude::*;
 
@@ -62,10 +62,10 @@ impl PlayerBundle {
     pub fn default_input_map() -> InputMap<GameAction> {
         // This allows us to replace `GameAction::Up` with `Up`, `GamepadButtonType::South` with `Gamepad::South`, ect., significantly reducing boilerplate
         use GameAction::*;
-        use InputKind::*;
+        // use InputKind::*;
 
         type Key = KeyCode;
-        type Scan = ScanCode;
+        // type Scan = ScanCode;
         type Mouse = MouseButton;
         type Gamepad = GamepadButtonType;
 

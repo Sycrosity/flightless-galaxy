@@ -49,9 +49,9 @@ fn main() -> Result<(), anyhow::Error> {
 fn pretty_size(size_in_bytes: usize) -> String {
     let size_in_kb = size_in_bytes as f32 / 1024.0;
     if size_in_kb < 1024.0 {
-        return format!("{:.2}kb", size_in_kb);
+        return format!("{size_in_kb:.2}kb");
     }
 
     let size_in_mb = size_in_kb / 1024.0;
-    return format!("{:.2}mb", size_in_mb);
+    format!("{size_in_mb:.2}mb")
 }

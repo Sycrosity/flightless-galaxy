@@ -81,7 +81,7 @@ pub async fn run_server(options: Options, output: WasmBindgenOutput) -> Result<(
         .layer(middleware_stack);
 
     let mut address_string = options.address;
-    if !address_string.contains(":") {
+    if !address_string.contains(':') {
         address_string +=
             &(":".to_owned() + &pick_port::pick_free_port(1334, 10).unwrap_or(80).to_string());
     }
@@ -114,12 +114,12 @@ fn get_snippet_source(
     local_modules: &HashMap<String, String>,
     snippets: &HashMap<String, Vec<String>>,
 ) -> Result<String, &'static str> {
-    let path = uri.path().trim_start_matches("/");
+    let path = uri.path().trim_start_matches('/');
     if let Some(module) = local_modules.get(path) {
         return Ok(module.clone());
     };
 
-    let (snippet, inline_snippet_name) = path.split_once("/").ok_or("invalid snippet path")?;
+    let (snippet, inline_snippet_name) = path.split_once('/').ok_or("invalid snippet path")?;
     let index = inline_snippet_name
         .strip_prefix("inline")
         .and_then(|path| path.strip_suffix(".js"))
@@ -139,7 +139,7 @@ impl<T: IntoResponse> IntoResponse for WithContentType<T> {
 }
 
 async fn internal_server_error(error: std::io::Error) -> impl IntoResponse {
-    (StatusCode::INTERNAL_SERVER_ERROR, format!("Unhandled internal error: {}", error))
+    (StatusCode::INTERNAL_SERVER_ERROR, format!("Unhandled internal error: {error}"))
 }
 
 mod pick_port {
