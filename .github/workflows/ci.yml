@@ -7,7 +7,7 @@ on:
       - main
 
 jobs:
-  clippy-check:
+  clippy:
     strategy:
       fail-fast: false
       matrix:
@@ -41,13 +41,14 @@ jobs:
           rustup component add clippy rustfmt
       - uses: Swatinem/rust-cache@v2
         with:
-          # key: flightless-galaxy-v1 # increment this to bust the cache if needed
-          shared-key: ${{ matrix.os }}-v1
+          shared-key: ${{ matrix.os }}
+          prefix-key: v0 #increment this to bust the cache if needed
       - name: install platform specific dependencies
         run: ${{ matrix.deps }}
 
-      - name: run cargo check
-        run:  cargo check --features dev
+      #clippy runs check, not needed
+      # - name: run cargo check
+      #   run:  cargo check --features dev
       - name: run cargo clippy
         run:  cargo clippy --features dev
         
@@ -98,11 +99,10 @@ jobs:
       - run: |
           rustup set auto-self-update disable
           rustup toolchain install nightly --profile minimal
-        # rustup component add clippy rustfmt
       - uses: Swatinem/rust-cache@v2
         with:
-          # key: flightless-galaxy-v1 # increment this to bust the cache if needed
-          shared-key: ${{ matrix.os }}-v1
+          shared-key: ${{ matrix.os }}
+          prefix-key: v0 #increment this to bust the cache if needed
       - name: install platform specific dependencies
         run: ${{ matrix.deps }}
 
