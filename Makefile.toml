@@ -54,10 +54,12 @@ args = ["install", "--path", "./crates/wasm-server-runner"]
 
 [tasks.actions]
 run_task = [
-    { name = "fmt" },
-    { name = "check" },
-    { name = "clippy" },
-    { name = "test-suite" },
+    { name = [
+        "fmt",
+        "check",
+        "clippy",
+        "test-suite"
+        ] }
 ]
 
 [tasks.fmt]
@@ -86,10 +88,12 @@ dependencies = ["test"]
 [tasks.member-actions]
 workspace = true
 run_task = [
-    { name = "fmt", fork = true },
-    { name = "member-clippy", fork = true },
-    { name = "member-check", fork = true },
-    { name = "member-test", fork = true },
+    { name = [
+        "fmt",
+        "member-clippy",
+        "member-check",
+        "member-test"
+    ], fork = true }
 ]
 
 [tasks.member-clippy]
@@ -108,6 +112,5 @@ args = ["test"]
 
 [tasks.all-actions]
 run_task = [
-    { name = "member-actions" },
-    { name = "actions" },
+    { name = ["member-actions","actions"] }
 ]
