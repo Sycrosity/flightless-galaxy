@@ -48,11 +48,13 @@ fn main() {
         .register_type::<AnimationTimer>()
         .register_type::<Controllable>()
         .register_type::<Speed>()
-        // .register_type::<Planet>()
+        .register_type::<Planet>()
+        .register_type::<Polar>()
+        //all `.assets.ron` files will be converted to `StandardDynamicAssetCollection` structs
         .add_plugin(RonAssetPlugin::<StandardDynamicAssetCollection>::new(&[
             "assets.ron",
         ]))
-        // .add_plugin(RonAssetPlugin::)
+        // .add_plugin(RonAssetPlugin::<GameSettings>::new(&["settings.ron"]))
         //This plugin maps inputs to an input-type agnostic action-state
         .add_plugin(InputManagerPlugin::<GameAction>::default())
         .add_loading_state(
@@ -78,7 +80,11 @@ fn main() {
         .run();
 }
 
-fn setup(mut commands: Commands) {
+fn setup(
+    mut commands: Commands,
+    // asset_server: Res<AssetServer>,
+    // game_settings: Res<Handle<GameSettings>>,
+) {
     commands.spawn((
         Camera2dBundle {
             /*

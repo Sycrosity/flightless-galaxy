@@ -15,5 +15,5 @@
     ),
     "ferris": File (
         path: "sprites/ferris.png",
-    )
+    ),
 })

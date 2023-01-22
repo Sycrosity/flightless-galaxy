@@ -7,52 +7,60 @@ use bevy::{
     sprite::{collide_aabb::Collision, MaterialMesh2dBundle},
     transform,
 };
-
 use leafwing_input_manager::prelude::*;
+use serde::{Deserialize, Serialize};
 
 pub fn spawn_game_assets(
     mut commands: Commands,
     assets: Res<ImageAssets>,
     asset_server: Res<AssetServer>,
     texture_atlases: Res<Assets<TextureAtlas>>,
+    // settings: Res<GameSettings>,
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<ColorMaterial>>,
 ) {
-    commands.spawn((
+    let mut planet = commands.spawn((
         MaterialMesh2dBundle {
             mesh: meshes.add(shape::Circle::new(100.).into()).into(),
             material: materials.add(ColorMaterial::from(Color::PURPLE)),
+            // transform: Transform::from_xyz(100., 10., 0.),
             ..default()
         },
+        Planet,
         Name::new("Planet"),
     ));
-    //spawn player
-    commands.spawn((
-        PlayerBundle::new(Polar::new(100., FRAC_PI_4, 10.), assets.ferris.clone()),
-        Controllable(true),
-        Speed(2.),
-        Name::new("Player [1]"),
-    ));
 
-    //spawn a sprite
-    for i in 1..16 {
-        //     for j in 0..16 {
-        commands.spawn((
-            SpriteSheetBundle {
-                sprite: TextureAtlasSprite::new(0),
-                texture_atlas: assets.sprite_atlas.clone(),
-                transform: Transform::from_rtz(25. * (i as f32), FRAC_PI_8, 10.),
-                ..default()
-            },
-            AnimationTimer(Timer::from_seconds(1., TimerMode::Repeating)),
-            InputManagerBundle {
-                input_map: PlayerBundle::default_input_map(),
-                ..default()
-            },
-            Controllable(false),
-            Name::new(format!("Enemy [{i}]")),
-        ));
-    }
+    planet.add_children(|parent| {
+        //spawn player
+        let player = parent
+            .spawn((
+                PlayerBundle::new(Polar::new(100., FRAC_PI_4, 10.), assets.ferris.clone()),
+                Controllable(true),
+                Speed(2.),
+                Name::new("Player [1]"),
+            ))
+            .id();
+
+        //spawn a sprite
+        for i in 1..16 {
+            //     for j in 0..16 {
+            parent.spawn((
+                SpriteSheetBundle {
+                    sprite: TextureAtlasSprite::new(0),
+                    texture_atlas: assets.sprite_atlas.clone(),
+                    transform: Transform::from_rtz(25. * (i as f32), FRAC_PI_8, 10.),
+                    ..default()
+                },
+                AnimationTimer(Timer::from_seconds(1., TimerMode::Repeating)),
+                InputManagerBundle {
+                    input_map: PlayerBundle::default_input_map(),
+                    ..default()
+                },
+                Controllable(false),
+                Name::new(format!("Enemy [{i}]")),
+            ));
+        }
+    });
 }
 
 pub fn animate_sprite_system(
@@ -136,4 +144,4 @@ pub fn player_movement(
     }
 }
 
-// pub fn input_handling() {}
+pub fn load_settings() {}

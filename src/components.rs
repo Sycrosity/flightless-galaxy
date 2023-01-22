@@ -9,6 +9,10 @@ use crate::prelude::*;
 #[reflect(Component)]
 pub struct Player;
 
+#[derive(Component, Reflect, Default)]
+#[reflect(Component)]
+pub struct Planet;
+
 ///a [`Component`] to display if the entity can be controlled by actions.
 #[derive(Component, Reflect, Default)]
 #[reflect(Component)]
