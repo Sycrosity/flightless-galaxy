@@ -24,7 +24,7 @@ impl Controllable {
 ///a [`Component`] to dictate the speed of an object moving around an origin, with the 'default' of 1 being π/2 radians of a circle (1/4 of a circle)
 #[derive(Component, Reflect, Default, InspectorOptions)]
 #[reflect(Component, InspectorOptions)]
-pub struct Speed(#[inspector(min = 0.0, max = 256.0, display = NumberDisplay::Slider)] pub f32);
+pub struct Speed(#[inspector(min = 0.0, max = 16.0, display = NumberDisplay::Slider)] pub f32);
 
 #[derive(Bundle)]
 pub struct PlayerBundle {
@@ -35,6 +35,23 @@ pub struct PlayerBundle {
     #[bundle]
     input_manager: InputManagerBundle<GameAction>,
     // sprite_sheet_bundle: SpriteSheetBundle,
+}
+
+#[derive(Component, Reflect, Default, InspectorOptions)]
+#[reflect(Component, InspectorOptions)]
+pub struct Jumper {
+    #[inspector(min = 0.0, max = 16.0, display = NumberDisplay::Slider)]
+    jump_delta: f32,
+    is_jumping: bool,
+}
+
+impl Jumper {
+    pub fn new(jump_delta: f32) -> Self {
+        Self {
+            jump_delta,
+            is_jumping: false,
+        }
+    }
 }
 
 impl PlayerBundle {

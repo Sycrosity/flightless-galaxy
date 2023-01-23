@@ -31,6 +31,7 @@ pub fn spawn_game_assets(
         PlayerBundle::new(Polar::new(100., FRAC_PI_4, 10.), assets.ferris.clone()),
         Controllable(true),
         Speed(2.),
+        Jumper::new(1.),
         Name::new("Player [1]"),
     ));
 
