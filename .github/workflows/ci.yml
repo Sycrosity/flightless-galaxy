@@ -6,6 +6,15 @@ on:
     branches:
       - main
 
+env:
+  # When rustup is updated, it tries to replace its binary, which on Windows is somehow locked.
+  # This can result in the CI failure, see: https://github.com/rust-lang/rustup/issues/3029
+  PREREQS: |
+    mv .github/rust-toolchain.toml rust-toolchain.toml
+    mv .github/config.toml .cargo/config.toml
+    rustup set auto-self-update disable
+
+
 jobs:
   clippy:
     strategy:
@@ -33,12 +42,10 @@ jobs:
       CARGO_TERM_COLOR: always
     steps:
       - uses: actions/checkout@v3
-      # When rustup is updated, it tries to replace its binary, which on Windows is somehow locked.
-      # This can result in the CI failure, see: https://github.com/rust-lang/rustup/issues/3029
       - run: |
-          rustup set auto-self-update disable
-          rustup toolchain install nightly --profile minimal
-          rustup component add clippy rustfmt
+          ${{ env.PREREQS }}
+          rustup toolchain install stable --profile minimal
+          rustup component add clippy
       - uses: Swatinem/rust-cache@v2
         with:
           shared-key: ${{ matrix.os }}
@@ -58,10 +65,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - run:  ${{ env.PREREQS }}
       - uses: actions-rs/toolchain@v1
         with:
           profile: minimal
-          toolchain: nightly
+          toolchain: stable
           components: rustfmt
       - uses: actions-rs/cargo@v1
         with:
@@ -97,8 +105,8 @@ jobs:
       # When rustup is updated, it tries to replace its binary, which on Windows is somehow locked.
       # This can result in the CI failure, see: https://github.com/rust-lang/rustup/issues/3029
       - run: |
-          rustup set auto-self-update disable
-          rustup toolchain install nightly --profile minimal
+          ${{ env.PREREQS }}
+          rustup toolchain install stable --profile minimal
       - uses: Swatinem/rust-cache@v2
         with:
           shared-key: ${{ matrix.os }}
