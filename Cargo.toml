@@ -39,6 +39,8 @@ instant = "0.1"
 #for debug - disable for release?
 bevy-inspector-egui = "0.17"
 # bevy-inspector-egui = { git = "https://github.com/jakobhellermann/bevy-inspector-egui" }
+#a physics engine
+bevy_rapier2d = { version = "0.20", features = [ "serde-serialize", "enhanced-determinism", "wasm-bindgen" ] }
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 console_error_panic_hook = "0.1"
