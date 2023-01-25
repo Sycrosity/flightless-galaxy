@@ -18,7 +18,7 @@ bevy_common_assets = { version = "0.4", features = ["ron"]}
 #better audio
 bevy_kira_audio = "0.13"
 #handling inputs in a logical way
-leafwing-input-manager = "0.7"
+leafwing-input-manager = "0.8"
 #for serialising data
 serde = "1.0"
 #serialising json files
