@@ -18,9 +18,11 @@ pub struct Polar {
     /// The polar angle from the reference direction, in radians.
     #[inspector(min = -PI, max = PI, display = NumberDisplay::Slider)]
     pub theta: f32,
-    /// used for z-ordering elements: higher `z`-value will be in front of lower
-    /// `z`-value.
-    #[inspector(min = 0., max = 256.)]
+    /// ~used for z-ordering elements: higher `z`-value will be in front of lower
+    /// `z`-value.~
+    ///
+    /// `z`-value is ignored, and ordering will instead be handled by the [ViewOrder] enum.
+    // #[inspector(min = 0., max = 256.)]
     pub z: f32,
 }
 

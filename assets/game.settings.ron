@@ -1,30 +1,11 @@
-// GameAction (
-
-//     Primary,
-//     Secondary,
-//     Up,
-//     Down,
-//     Left,
-//     Right,
-//     Jump,
-// )
-
-GameSettings(
-
-    //Key = bevy::input::keyboard::KeyCode;
-    //Scan = bevy::input::keyboard::ScanCode;
-    //Mouse = bevy::input::mouse::MouseButton;
-    //Gamepad = bevy::input::gamepad::GamepadButtonType;
-
-    key_bindings: {
-        Down: Up,
-        Up: Down,
-        Right: Left,
-        Left: Right,
-
-
-    },
-    // gamepad_bindings: {
-        
-    // }
+GameSettings (
+    keybinds: (
+        map: {
+            Left:   [Single(Keyboard(A)),Single(Keyboard(Left))],
+            Right:  [Single(Keyboard(D)),Single(Keyboard(Right))],
+            Up:     [Single(Keyboard(W)),Single(Keyboard(Up))],
+            Down:   [Single(Keyboard(S)),Single(Keyboard(Down))],
+            Jump:   [Single(Keyboard(Space))],
+        },
+    )
 )
