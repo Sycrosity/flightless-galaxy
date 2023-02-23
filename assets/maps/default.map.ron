@@ -1,0 +1,38 @@
+Meta (
+
+    //map ron file version
+    version: "0.1"
+    
+ 
+)
+
+Map (
+    //display name of the map in the map selector
+    name: "default map",
+    //"breaking" (gameplay altering/not asthetic) changes for the major (e.g. 1.0 -> 2.0) and any other for minor
+    version: "0.1",
+    entities: [
+
+        Planet (
+            radius: 100.,
+            //OPTIONAL - Defaults to 1/
+            gravity: 1.,
+            //options are Polar(r,theta,z) or Vec3(x,y,z) - `z` axis will be used for z-ordering, however you should instead use the unified `ViewPriority` enum instead for simplicity (unless fine control is needed!).
+            //`theta` should be in radians - if you don't want to do the maths, you can use the consts from core::f32::consts for a few decent pre-existing angles. 2 PI (also called TAU) is one full circle in radians (equal to 360 degrees)
+            pos: Polar(0., 0., 0.),
+            //OPTIONAL - Defaults to Stage.
+            //one of: Bg, Stage, Item, Player, Fg - each correspond to a z-axis 20 units apart, starting at 0 [Bg] and ending at 100 [Fg] - so a view priority of `Player` would be a z-axis of 80.
+            view_priority: Stage,
+            //OPTIONAL - Defaults to single grey colour.
+            texture_path: "icons/bevy_icon.png"
+        ),
+
+        // Planet (
+        //     radius: 50.,
+        //     gravity: 2.,
+        //     pos: Polar(100., PI, 0.),
+        //     view_priority: Stage
+        // ),
+
+    ]
+)

@@ -16,4 +16,7 @@
     "ferris": File (
         path: "sprites/ferris.png",
     ),
+    "default_map": File (
+        path: "maps/default.map.ron",
+    ),
 })

@@ -15,7 +15,8 @@ pub fn spawn_game_assets(
     assets: Res<ImageAssets>,
     asset_server: Res<AssetServer>,
     texture_atlases: Res<Assets<TextureAtlas>>,
-    // settings: Res<GameSettings>,
+    images: Res<Assets<Image>>,
+    settings: Res<GameSettings>,
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<ColorMaterial>>,
 ) {
@@ -32,6 +33,15 @@ pub fn spawn_game_assets(
 
     planet.add_children(|parent| {
         //spawn player
+        let player = parent.spawn((
+            PlayerBundle::new(
+                Polar::new(100., FRAC_PI_2, 10.),
+                assets.ferris.clone(),
+                settings.keybinds.clone(),
+            ),
+            Controllable(true),
+            Speed(2.),
+            Name::new("Player [1]"),
         let player = parent
             .spawn((
                 PlayerBundle::new(Polar::new(100., FRAC_PI_4, 10.), assets.ferris.clone()),
@@ -40,20 +50,21 @@ pub fn spawn_game_assets(
                 Name::new("Player [1]"),
             ))
             .id();
+        ));
 
         //spawn a sprite
+
         for i in 1..16 {
-            //     for j in 0..16 {
             parent.spawn((
                 SpriteSheetBundle {
                     sprite: TextureAtlasSprite::new(0),
                     texture_atlas: assets.sprite_atlas.clone(),
-                    transform: Transform::from_rtz(25. * (i as f32), FRAC_PI_8, 10.),
+                    transform: Transform::from_rtz(24. * (i as f32), FRAC_PI_6, 10.),
                     ..default()
                 },
                 AnimationTimer(Timer::from_seconds(1., TimerMode::Repeating)),
                 InputManagerBundle {
-                    input_map: PlayerBundle::default_input_map(),
+                    input_map: settings.keybinds.clone(),
                     ..default()
                 },
                 Controllable(false),

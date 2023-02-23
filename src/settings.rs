@@ -15,8 +15,8 @@ pub struct GameSettings {
 }
 
 impl GameSettings {
-    pub fn new<P: AsRef<Path>>(path: P, error_message: &str) -> Self {
-        parse_ron(path, error_message)
+    pub fn new<P: AsRef<Path>>(path: P) -> Self {
+        parse_ron(path, format!("reverting to default settings map -failed to parse `{:#?}`: ", &path))
     }
 }
 
@@ -37,8 +37,7 @@ pub mod prelude {
 #[allow(unused)]
 //the default, no-file found input map setup
 pub fn default_input_map() -> InputMap<GameAction> {
-    // This allows us to replace `ArpgAction::Up` with `Up`,
-    // significantly reducing boilerplate
+    //this allows us to replace `GameAction::Up` with `Up`, significantly reducing boilerplate
     use GameAction::*;
     type Key = KeyCode;
     type Mouse = MouseButton;
