@@ -53,11 +53,7 @@ impl PlanetBundle {
                     Vec3::splat(0.1),
                 ),
                 ..default()
-            },
-            input_manager: InputManagerBundle {
-                input_map: PlayerBundle::default_input_map(),
-                ..default()
-            },
+            }
         }
     }
 }

@@ -42,14 +42,6 @@ pub fn spawn_game_assets(
             Controllable(true),
             Speed(2.),
             Name::new("Player [1]"),
-        let player = parent
-            .spawn((
-                PlayerBundle::new(Polar::new(100., FRAC_PI_4, 10.), assets.ferris.clone()),
-                Controllable(true),
-                Speed(2.),
-                Name::new("Player [1]"),
-            ))
-            .id();
         ));
 
         //spawn a sprite

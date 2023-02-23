@@ -4,7 +4,7 @@ use bevy_inspector_egui::*;
 use leafwing_input_manager::prelude::*;
 
 use serde::{Deserialize, Serialize};
-use std::path::Path;
+use std::{path::Path, fmt::Debug};
 
 ///Various game settings which can be imported from a .settings.ron file
 #[derive(Serialize, Deserialize, Reflect, Resource, InspectorOptions, Debug)]
@@ -15,8 +15,9 @@ pub struct GameSettings {
 }
 
 impl GameSettings {
-    pub fn new<P: AsRef<Path>>(path: P) -> Self {
-        parse_ron(path, format!("reverting to default settings map -failed to parse `{:#?}`: ", &path))
+    pub fn new<P: AsRef<Path> + Debug + Copy>(path: P) -> Self {
+        let message = path.clone();
+        parse_ron(path, format!("reverting to default settings map - failed to parse {:?}", message).as_str())
     }
 }
 
