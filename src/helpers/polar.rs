@@ -1,19 +1,28 @@
 use core::{fmt, ops::*};
 
 use bevy::{math::Vec3, prelude::*};
+use bevy_inspector_egui::{
+    inspector_options::std_options::NumberDisplay, prelude::*, InspectorOptions,
+};
 
 use crate::prelude::*;
 
 /// a 2d polar point (for [polar coordinate systems](https://en.wikipedia.org/wiki/Polar_coordinate_system)).
 /// r is for the radius, theta for the angle, and z for screen order
-#[derive(Clone, Copy, Default, PartialEq, Component)]
+#[derive(Clone, Copy, Default, PartialEq, Component, Reflect, InspectorOptions)]
+#[reflect(Component, InspectorOptions)]
 pub struct Polar {
     /// The radius (distance) from the reference pole.
+    #[inspector(min = 0., max = 1024., display = NumberDisplay::Slider)]
     pub r: f32,
     /// The polar angle from the reference direction, in radians.
+    #[inspector(min = -PI, max = PI, display = NumberDisplay::Slider)]
     pub theta: f32,
-    /// used for z-ordering elements: higher `z`-value will be in front of lower
-    /// `z`-value.
+    /// ~used for z-ordering elements: higher `z`-value will be in front of lower
+    /// `z`-value.~
+    ///
+    /// `z`-value is ignored, and ordering will instead be handled by the [ViewOrder] enum.
+    // #[inspector(min = 0., max = 256.)]
     pub z: f32,
 }
 

@@ -1,0 +1,11 @@
+GameSettings (
+    keybinds: (
+        map: {
+            Left:   [Single(Keyboard(A)),Single(Keyboard(Left))],
+            Right:  [Single(Keyboard(D)),Single(Keyboard(Right))],
+            Up:     [Single(Keyboard(W)),Single(Keyboard(Up))],
+            Down:   [Single(Keyboard(S)),Single(Keyboard(Down))],
+            Jump:   [Single(Keyboard(Space))],
+        },
+    )
+)

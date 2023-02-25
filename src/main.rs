@@ -4,11 +4,11 @@
 use bevy::{
     diagnostic::{EntityCountDiagnosticsPlugin, FrameTimeDiagnosticsPlugin, LogDiagnosticsPlugin},
     prelude::*,
+    window::close_on_esc,
 };
 
 use bevy_asset_loader::prelude::*;
 use bevy_common_assets::ron::RonAssetPlugin;
-
 use bevy_inspector_egui::quick::WorldInspectorPlugin;
 use leafwing_input_manager::prelude::*;
 
@@ -26,10 +26,10 @@ fn main() {
                 //     level: bevy::log::Level::INFO,
                 //     ..default()
                 // })
-                .set(AssetPlugin {
-                    watch_for_changes: true,
-                    ..default()
-                }) //hotreloading of files
+                // .set(AssetPlugin {
+                //     watch_for_changes: true,
+                //     ..default()
+                // })
                 .set(WindowPlugin {
                     window: WindowDescriptor {
                         // fill the entire browser window
@@ -48,17 +48,21 @@ fn main() {
         .register_type::<AnimationTimer>()
         .register_type::<Controllable>()
         .register_type::<Speed>()
-        // .register_type::<Planet>()
+        .register_type::<Planet>()
+        .register_type::<Polar>()
+        .insert_resource(GameSettings::new("game.settings.ron"))
+        .register_type::<GameSettings>()
+        //all `.assets.ron` files will be converted to `StandardDynamicAssetCollection` structs
         .add_plugin(RonAssetPlugin::<StandardDynamicAssetCollection>::new(&[
             "assets.ron",
         ]))
-        // .add_plugin(RonAssetPlugin::)
         //This plugin maps inputs to an input-type agnostic action-state
         .add_plugin(InputManagerPlugin::<GameAction>::default())
+        //debug close app on pressing esc
+        .add_system(close_on_esc)
         .add_loading_state(
             LoadingState::new(GameState::AssetLoading)
                 .continue_to_state(GameState::Playing)
-                // .set_standard_dynamic_asset_collection_file_endings(vec![".ron"])
                 .with_dynamic_collections::<StandardDynamicAssetCollection>(vec!["game.assets.ron"])
                 .with_collection::<ImageAssets>(),
         )
@@ -81,11 +85,10 @@ fn main() {
 fn setup(mut commands: Commands) {
     commands.spawn((
         Camera2dBundle {
-            /*
-            projection: OrthographicProjection {
-                scaling_mode: ScalingMode::FixedVertical(16.),
-                ..default()
-            },*/
+            // projection: OrthographicProjection {
+            //     scaling_mode: ScalingMode::FixedVertical(16.),
+            //     ..default()
+            // },
             ..default()
         },
         Name::new("2DCamera [1]"),

@@ -1,6 +1,9 @@
 use leafwing_input_manager::prelude::*;
+use serde::{Deserialize, Serialize};
 
-#[derive(Actionlike, PartialEq, Eq, Clone, Copy, Hash, Debug)]
+#[derive(
+    Actionlike, Serialize, Deserialize, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Debug,
+)]
 pub enum GameAction {
     Primary,
     Secondary,
