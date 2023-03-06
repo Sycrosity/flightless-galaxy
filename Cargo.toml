@@ -16,7 +16,7 @@ bevy_asset_loader = { version = "0.14", features = ["standard_dynamic_assets", "
 #for importing assets in the form of "ron" files
 bevy_common_assets = { version = "0.4", features = ["ron"]}
 #better audio
-bevy_kira_audio = "0.13"
+bevy_kira_audio = "0.15"
 #handling inputs in a logical way
 leafwing-input-manager = "0.8"
 #for serialising data
@@ -45,16 +45,12 @@ console_error_panic_hook = "0.1"
 
 #features all targets should have
 [dependencies.bevy]
-version = "0.9"
+version = "0.10.0"
 default-features = true
 features = ["ktx2", "bevy_winit"]
 
 [features]
-dev = ["bevy/dynamic"]
-
-#fix macos window weirdness - not a good fix but it should work
-[target.'cfg(target_os = "macos")'.dependencies]
-cocoa = "0.24"
+dev = ["bevy/dynamic_linking"]
 
 [build-dependencies]
 embed-resource = "1.8"
